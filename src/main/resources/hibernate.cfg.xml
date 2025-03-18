@@ -1,8 +1,9 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<hibernate-configuration xmlns="http://hibernate.org/xsd/orm/cfg"
-                         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-                         xsi:schemaLocation="http://hibernate.org/xsd/orm/cfg
-                         http://hibernate.org/xsd/hibernate-configuration-5.5.xsd">
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC
+        "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+
+<hibernate-configuration>
 
     <session-factory>
         <!-- Configuração da Conexão -->
@@ -16,6 +17,25 @@
         <property name="hibernate.hbm2ddl.auto">update</property>
         <property name="hibernate.show_sql">true</property>
         <property name="hibernate.format_sql">true</property>
+
+        <!-- Pool de conexões HikariCP -->
+        <property name="hibernate.hikari.minimumIdle">5</property>
+        <property name="hibernate.hikari.maximumPoolSize">20</property>
+        <property name="hibernate.hikari.idleTimeout">30000</property>
+
+        <!-- Configuração de transações -->
+        <property name="hibernate.transaction.coordinator_class">jdbc</property>
+
+        <!-- Desativando cache de segundo nível para evitar erros -->
+        <property name="hibernate.cache.use_second_level_cache">false</property>
+        <property name="hibernate.cache.use_query_cache">false</property>
+
+        <!-- Ajustes para evitar problemas de timezone -->
+        <property name="hibernate.jdbc.time_zone">UTC</property>
+
+
+        <property name="hibernate.current_session_context_class">thread</property>
+
     </session-factory>
 
 </hibernate-configuration>
