@@ -16,11 +16,15 @@ public class LivroDAO {
         try {
             transaction = session.beginTransaction();
 
-            if (livro.getAutor() != null) {
+            if (livro.getAutor() != null && livro.getAutor().getId() == null) {
+                session.save(livro.getAutor());
+            } else if (livro.getAutor() != null) {
                 session.saveOrUpdate(livro.getAutor());
             }
 
-            if (livro.getEditora() != null) {
+            if (livro.getEditora() != null && livro.getEditora().getId() == null) {
+                session.save(livro.getEditora());
+            } else if (livro.getEditora() != null) {
                 session.saveOrUpdate(livro.getEditora());
             }
 
@@ -28,7 +32,7 @@ public class LivroDAO {
             transaction.commit();
         } catch (Exception e) {
             if (transaction != null) transaction.rollback();
-            throw new RuntimeException(e); // Lança uma exceção para tratamento mais alto
+            throw new RuntimeException(e);
         } finally {
             session.close();
         }

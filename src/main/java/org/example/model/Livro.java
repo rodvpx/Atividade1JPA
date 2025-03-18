@@ -10,17 +10,18 @@ public class Livro implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(columnDefinition = "BINARY(16)")
     private UUID id;
 
     private String titulo;
     private int anoPublicacao;
     private String isbn;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "autor_id")
     private Autor autor;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "editora_id")
     private Editora editora;
 

@@ -5,7 +5,6 @@ import org.example.model.Livro;
 import org.example.util.HibernateUtil;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
-import org.hibernate.query.Query;
 
 import java.util.List;
 import java.util.UUID;
@@ -54,18 +53,20 @@ public class EditoraDAO {
 
     public List<Livro> buscarLivrosPorEditora(UUID editoraId) {
         Session session = HibernateUtil.getSessionFactory().openSession();
-        List<Livro> livros = null;
         try {
-            Query query = session.createQuery(
-                    "SELECT l FROM Livro l WHERE l.editora.id = :editora_id", Livro.class);
-            query.setParameter("editora_id", editoraId);
-            livros = query.getResultList();
+            return session.createQuery(
+                            "SELECT l FROM Livro l " +
+                                    "JOIN FETCH l.autor " +      // Carrega autor em uma query
+                                    "JOIN FETCH l.editora " +    // Carrega editora em uma query
+                                    "WHERE l.editora.id = :editoraId",
+                            Livro.class
+                    )
+                    .setParameter("editoraId", editoraId)
+                    .getResultList();
         } catch (Exception e) {
-            e.printStackTrace();
+            throw new RuntimeException("Erro ao buscar livros por editora", e);
         } finally {
             session.close();
         }
-        return livros;
     }
-
 }

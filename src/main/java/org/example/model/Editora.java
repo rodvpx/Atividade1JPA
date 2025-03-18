@@ -10,6 +10,7 @@ public class Editora implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(columnDefinition = "BINARY(16)")
     private UUID id;
 
     private String nome;
